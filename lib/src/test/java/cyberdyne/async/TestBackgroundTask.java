@@ -12,9 +12,9 @@ public class TestBackgroundTask {
     @Test
     public void test() {
 
-        var duration = Duration.ofSeconds(1);
-        var executed = new AtomicBoolean(false);
-        var execTimes = new AtomicInteger(0);
+        Duration duration = Duration.ofSeconds(1);
+        AtomicBoolean executed = new AtomicBoolean(false);
+        AtomicInteger execTimes = new AtomicInteger(0);
 
         BackgroundTask task = new BackgroundTask(duration) {
             @Override
@@ -39,9 +39,8 @@ public class TestBackgroundTask {
         task.stop();
 
         Assertions.assertTrue(task.isStopping(), "isStopping != True");
-        while (task.isStopping()) {
-            Thread.yield();
-        }
+
+        task.join();
 
         long threadStopped = System.currentTimeMillis();
         System.out.println("took "+ (threadStopped - stopRequested) +"ms to stop.");
